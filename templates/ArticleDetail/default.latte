@@ -20,8 +20,13 @@
         {$article->perex}
     </p>
     {if $image}
-        <img src="{plink :PhotoGallery:Photo:, $image->photogallery_gallery_id, \Nette\Utils\Strings::webalize($image->photogallery_gallery->name), $image->filename, '1010x384'}" class="img-responsive">
-        <a n:if="$article->photogallery_gallery->related('photogallery_photo.photogallery_gallery_id')->count('*') > 1" href="{plink :PhotoGallery:Gallery:, $article->photogallery_gallery_id, $article->photogallery_gallery->name}" class="btn btn-sm btn-default pull-right">Zobrazit celou galerii</a>
+        {if $article->photogallery_gallery->related('photogallery_photo.photogallery_gallery_id')->count('*') > 1}
+            {magicControl photoGallery, ["articlePhotoGallery", $image->photogallery_gallery_id], 'unitegallery'}
+        {else}
+            <div class="cst-thumbnail cst-no-gradient" style="background-image: url({plink :PhotoGallery:Photo:, $image->photogallery_gallery_id, \Nette\Utils\Strings::webalize($image->photogallery_gallery->name), $image->filename, '960x600'})">
+                <img src="{plink :PhotoGallery:Photo:, $image->photogallery_gallery_id, \Nette\Utils\Strings::webalize($image->photogallery_gallery->name), $image->filename, '960x600'}" class="img-responsive">
+            </div>
+        {/if}
     {/if}
 
     {$article->article|noescape}
@@ -32,7 +37,7 @@
 
     {magicControl articleSeries, ['articleSeries', $article->series_id, $article->id]}
 
-    <div n:if="$article->can_add_comment" class="cst-heading">
+    <div n:if="$presenter->moduleRepository->moduleExist('comment') && $article->can_add_comment" class="cst-heading">
         <h2>Komentáře</h2>
         {magicControl comment, ['commentArticle', 'article-'. $article->id]}
     </div>

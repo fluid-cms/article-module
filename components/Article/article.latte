@@ -74,7 +74,7 @@
                             <a href="#" class="time-before">{$article->published_on}</a>
                         </span>
                         {*f exist coment module*}
-                        <span n:if="$article->can_add_comment" class="comments hidden-xs">
+                        <span n:if="$control->moduleRepository->moduleExist('comment') && $article->can_add_comment" class="comments hidden-xs">
                             <a href="#">{$article->number_of_comments} {$article->number_of_comments == 1 ? 'komentář':
                             (($article->number_of_comments < 5 && $article->number_of_comments > 1) ? 'komentáře' : 'komentářů')}</a>
                         </span>
@@ -90,7 +90,7 @@
 
         {if $showAll && !empty($articles)}
             {include ../paging.latte}
-        {elseif !$smaller}
+        {else}
             <div class="text-center">
                 <a href="{plink :Article:Article:default, page => 1, search => null, date => null, filter => []}" class="btn btn-primary m-t-15">
                     Zobrazit archív >
@@ -99,12 +99,12 @@
         {/if}
     {else}
         <div class="text-center">
-            Žádné zprávy
+            Žádné články
         </div>
     {/if}
 
 {else}
     <div class="text-center">
-        Žádné zprávy
+        Žádné články
     </div>
 {/if}

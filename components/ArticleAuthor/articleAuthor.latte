@@ -12,9 +12,8 @@
     <!-- Autor článku -->
     <div class="col-md-8 col-md-offset-2">
         <div class="row">
-            <div class="col-sm-4 col-xs-12">
-                {*todo $author->photo*}
-                <img src="img/thumb/author.jpg" class="img-responsive center-block">
+            <div class="col-sm-4 col-xs-12" n:if="$author->photo">
+                <img src="{$author->photo}" class="img-responsive center-block">
             </div>
             <div class="col-sm-8 col-xs-12">
                 <span>{if $authorName}Autor - {/if}<b>{$author->name}</b></span>
@@ -23,7 +22,7 @@
                     {$author->description}
                 </p>
                 <p class="text-right">
-                    <a href="#"><i class="icon-m icon-m-forward icon-fw"></i><i>další články autora</i></a>
+                    <a href="{plink :Article:Article:author, 'authorId' => $author->id, 'authorName' => $author->name, page => 1, search => null, date => null, filter => []}"><i class="icon-m icon-m-forward icon-fw"></i><i>další články autora</i></a>
                 </p>
             </div>
         </div>

@@ -7,6 +7,7 @@ use Grapesc\GrapeFluid\ArticleModule\Model\ArticleCategoryModel;
 use Grapesc\GrapeFluid\ArticleModule\Model\ArticlePageModel;
 use Grapesc\GrapeFluid\ArticleModule\Model\ArticleTopicModel;
 use Grapesc\GrapeFluid\MagicControl\BaseMagicTemplateControl;
+use Grapesc\GrapeFluid\ModuleRepository;
 use Grapesc\GrapeFluid\PhotoGalleryModule\Model\PhotoModel;
 use Nette\Database\Table\Selection;
 use Nette\Utils\DateTime;
@@ -39,7 +40,10 @@ class ArticleControl extends BaseMagicTemplateControl
 
 	/** @var UserModel @inject */
 	public $userModel;
-	
+
+	/** @var ModuleRepository @inject */
+	public $moduleRepository;
+
 	/** @var integer */
 	protected $limit = 5;
 

@@ -5,6 +5,7 @@ namespace Grapesc\GrapeFluid\ArticleModule\Presenters;
 use Grapesc\GrapeFluid\AdminModule\Model\UserModel;
 use Grapesc\GrapeFluid\ArticleModule\Model\ArticleCategoryModel;
 use Grapesc\GrapeFluid\CoreModule\Service\BreadCrumbService;
+use Grapesc\GrapeFluid\ModuleRepository;
 use Nette\Application\BadRequestException;
 use Nette\Utils\Strings;
 
@@ -44,6 +45,9 @@ class ArticlePresenter extends BasePresenter
 	
 	/** @var UserModel @inject */
 	public $userModel;
+
+	/** @var ModuleRepository @inject */
+	public $moduleRepository;
 
 
 	public function actionDefault($filter = [])
