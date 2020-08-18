@@ -1,0 +1,43 @@
+<nav>
+    <ul class="pagination">
+        {if !$paginator->first}
+            <li>
+                <a href="{plink 'this', 'page' => $paginator->getFirstPage()}">
+                    |<
+                </a>
+            </li>
+            <li>
+                <a href="{plink 'this', 'page' => $paginator->getPage() - 1}">
+                    Předchozí
+                </a>
+            </li>
+            {if $paginator->getPage() > ($pageMove + 1)}
+                <li><a style="cursor: default">...</a></li>
+            {/if}
+            {for $page = $paginator->getPage() > $pageMove ? $paginator->getPage() - $pageMove : $paginator->getFirstPage(); $page < $paginator->getPage(); $page++}
+                <li><a href="{plink 'this', 'page' => $page}">{$page}</a></li>
+            {/for}
+        {/if}
+
+        <li class="active"><a href="#" >{$paginator->getPage()}</a></li>
+
+        {if !$paginator->last}
+            {for $page = $paginator->getPage() + 1, $lastPage = ($paginator->getLastPage() - $paginator->getPage()) > $pageMove ? $paginator->getPage() + $pageMove : $paginator->getLastPage(); $page <= $lastPage; $page++}
+                <li><a href="{plink 'this', 'page' => $page}">{$page}</a></li>
+            {/for}
+            {if ($paginator->getLastPage() - $paginator->getPage()) > $pageMove}
+                <li><a style="cursor: default">...</a></li>
+            {/if}
+            <li>
+                <a href="{plink 'this', 'page' => $paginator->page + 1}">
+                    Další
+                </a>
+            </li>
+            <li>
+                <a href="{plink 'this', 'page' => $paginator->getLastPage()}">
+                    >|
+                </a>
+            </li>
+        {/if}
+    </ul>
+</nav>

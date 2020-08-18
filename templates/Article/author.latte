@@ -1,0 +1,5 @@
+{block title}Články autora {$author->name}{/block}
+
+{block content}
+    {magicControl article, ['allArticle', $itemPerPage, (($presenter->page - 1) * $itemPerPage) + 1, true, $filter]}
+{/block}

@@ -1,0 +1,8 @@
+{if $topics}
+    <p>
+        <b>Témata:</b>
+        {foreach $topics as $topic}
+        <a href="{plink :Article:Article:topic, topic=>$topic, page=>1, search => null, date => null, filter => []}">{$topic}</a>{if $topics && count($topics) > 0 && !$iterator->last},{/if}
+        {/foreach}
+    </p>
+{/if}

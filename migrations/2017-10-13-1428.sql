@@ -1,0 +1,1 @@
+ALTER TABLE `article_page` ADD `show_counter` int(11) NOT NULL DEFAULT '0';

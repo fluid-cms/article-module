@@ -1,0 +1,108 @@
+parameters:
+	routing:
+		article:
+			- ['clanky[/strana/<page>] ? mesic=<date>', 'Article:default']
+			- ['clanky/kategorie/<categoryId>-<categoryName>[/strana/<page>] ? mesic=<date>', 'Article:category']
+			- ['clanky/autor/<authorId>-<authorName>[/strana/<page>]', 'Article:author']
+			- ['clanky/tema/<topic>[/strana/<page>]', 'Article:topic']
+			- ['clanek/<id>-<title>', 'ArticleDetail:default']
+			- ['clanek/<id>', [presenter: ArticleDetail, action: default, id: [filterIn: [@Grapesc\GrapeFluid\ArticleModule\RouteFilter\Article, filterIn], filterOut: [@Grapesc\GrapeFluid\ArticleModule\RouteFilter\Article, filterOut]]]]
+
+	controls:
+		article:
+			class: Grapesc\GrapeFluid\Article\Control\Article\ArticleControlFactory
+			desc: 'Slouží pro výpis článků'
+			params:
+				limit: [int, 'Limit zobrazených článků (Větší než 0)']
+				start: [int, 'Od kterého článků zobrazit (offset)']
+				showAll: [int, 'Zobrazit vše (1 / 0)']
+		articleAuthor:
+			class: Grapesc\GrapeFluid\Article\Control\ArticleAuthor\ArticleAuthorControlFactory
+			desc: 'Slouží pro výpis informací o autorovi'
+			params:
+				authorId: [int, 'db id uzivatele']
+				authorName: [string, 'Jmeno autora, prepise pripadneho autora z db']
+				authorLink: [string, 'Odkaz na autora']
+		articleTopic:
+			class: Grapesc\GrapeFluid\Article\Control\ArticleTopic\ArticleTopicControlFactory
+			desc: 'Slouží k vypisování témat článku'
+			params:
+				topic: [string, 'Témata článku, oddělovačem je čárka']
+		articleSeries:
+			class: Grapesc\GrapeFluid\Article\Control\ArticleSeries\ArticleSeriesControlFactory
+			desc: 'Slouží k vypisu ostatních článků stejného seriálu'
+			params:
+				topic: [string, 'Témata článku, oddělovačem je čárka']
+		filter:
+			class: Grapesc\GrapeFluid\ArticleModule\Control\Filter\FilterControlFactory
+			desc: 'Slouží pro výpis filtru'
+			params:
+	collections:
+		articleCategory:
+			name: 'Kategorie článků'
+			icon: 'pencil'
+			class:
+				- Grapesc\GrapeFluid\ArticleModule\Collection\ArticleCategoryCollection
+
+	backend:
+		auth:
+			article: 'article'
+		menu:
+			Články:
+				order: 2
+				icon: 'newspaper-o'
+				auth: '%backend.auth.article%'
+				submenu:
+					Přehled článků:
+						icon: 'th'
+						link: ':Admin:Article:default'
+						selected:
+							- ':Admin:Article:edit'
+					Vytvořit článek:
+						icon: 'plus-circle'
+						link: ':Admin:Article:create'
+					Kategorie:
+						icon: 'bookmark-o'
+						link: ':Admin:ArticleCategory:default'
+						selected:
+							- ':Admin:ArticleCategory:.*'
+					Seriály:
+						icon: 'stack-exchange'
+						link: ':Admin:ArticleSeries:default'
+						selected:
+							- ':Admin:ArticleSeries:.*'
+
+	translator:
+		locales:
+			- %moduleDir%/ArticleModule/config/Locale/cs.neon
+
+services:
+	- Grapesc\GrapeFluid\ArticleModule\Model\ArticlePageModel
+	- Grapesc\GrapeFluid\ArticleModule\Model\ArticleCategoryModel
+	- Grapesc\GrapeFluid\ArticleModule\Model\ArticleSeriesModel
+	- Grapesc\GrapeFluid\ArticleModule\Model\ArticleArticleCategoryModel
+	- Grapesc\GrapeFluid\ArticleModule\Model\ArticleTopicModel
+	- Grapesc\GrapeFluid\ArticleModule\Model\ArticleTopicArticleModel
+	- Grapesc\GrapeFluid\ArticleModule\ArticlePageForm
+	- Grapesc\GrapeFluid\ArticleModule\ArticleCategoryForm
+	- Grapesc\GrapeFluid\ArticleModule\ArticleSeriesForm
+	- Grapesc\GrapeFluid\ArticleModule\RouteFilter\Article
+
+assets:
+	autocomplete:
+		limit:
+			- ':Admin:Article:.*'
+		css:
+			- 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css'
+			- 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-typeahead.css'
+			- '%moduleDir%/ArticleModule/assets/css/bootstrap-tagsinput.css'
+		js:
+			- 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js'
+			- 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js'
+	owlcarousel:
+		limit:
+			- ':Article:Article:.*'
+	summer:
+		limit:
+			- ['link' = ':Article:Article:.*', 'auth' = 'article', 'option' = 'article.edit.inline']
+			- ['link' = ':Article:ArticleDetail:.*', 'auth' = 'article', 'option' = 'article.edit.inline']

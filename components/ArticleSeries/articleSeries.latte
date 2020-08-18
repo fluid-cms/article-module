@@ -1,0 +1,15 @@
+{if $seriesId && $seriesArticles}
+    <div class="list-group">
+        {var $count = count($seriesArticles)}
+        <a href="{plink :Article:Article:series, seriesId=>$seriesId, seriesName=>$seriesName, page=>1}" class="list-group-item list-group-item-black">
+            Seriál <b>{$seriesName}</b> - {$count} {$count == 1 ? 'článek' : (in_array($count, [2, 3, 4]) ? 'články' : 'článků')}
+        </a>
+        <div class="list-group-item" n:foreach="$seriesArticles as $article">
+            <a href="{plink :Article:ArticleDetail:default, $article->id}">
+                <b n:tag-if="$article->id == $actualArticleId">
+                    {$article->title}
+                </b>
+            </a>
+        </div>
+    </div>
+{/if}

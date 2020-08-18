@@ -1,0 +1,40 @@
+{block title}
+    {$article->title}
+{/block}
+
+{block content}
+    <h1 class="m-b-15">{$article->title}</h1>
+
+    <div n:if="$noPublishedAlert" class="text-danger">
+        Tento článek není zatím publikovaný, je viditelný pouze s patřičnými oprávněními.
+    </div>
+
+    <div class="categories">
+        <a href="{plink :Article:Article:category, categoryId => $article->main_category_id, categoryName => \Nette\Utils\Strings::webalize($article->main_category->name), page => 1, search => null, date => null, filter => []}" class="label label-default">{$article->main_category->name}</a>
+        {foreach $categories as $category}
+            <a href="{plink :Article:Article:category, categoryId => $category->category_id, categoryName => \Nette\Utils\Strings::webalize($category->category->name), page => 1, search => null, date => null, filter => []}" class="label label-default">{$category->category->name}</a>
+        {/foreach}
+    </div>
+
+    <p>
+        {$article->perex}
+    </p>
+    {if $image}
+        <img src="{plink :PhotoGallery:Photo:, $image->photogallery_gallery_id, \Nette\Utils\Strings::webalize($image->photogallery_gallery->name), $image->filename, '1010x384'}" class="img-responsive">
+        <a n:if="$article->photogallery_gallery->related('photogallery_photo.photogallery_gallery_id')->count('*') > 1" href="{plink :PhotoGallery:Gallery:, $article->photogallery_gallery_id, $article->photogallery_gallery->name}" class="btn btn-sm btn-default pull-right">Zobrazit celou galerii</a>
+    {/if}
+
+    {$article->article|noescape}
+
+    {magicControl articleTopic, ['articleTopic', $article->id]}
+
+    {magicControl articleAuthor, ['articleAuthor', $article->author_id, $article->author_name, $article->author_link]}
+
+    {magicControl articleSeries, ['articleSeries', $article->series_id, $article->id]}
+
+    <div n:if="$article->can_add_comment" class="cst-heading">
+        <h2>Komentáře</h2>
+        {magicControl comment, ['commentArticle', 'article-'. $article->id]}
+    </div>
+
+{/block}

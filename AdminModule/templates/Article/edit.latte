@@ -1,0 +1,56 @@
+{block content}
+
+    <h1 class="page-header">
+        {block title}Úprava článku {$articlePage->title}{/block}
+        <span class="button-area">
+            <a n:href=":Article:ArticleDetail: $presenter->getParameter('id')" class="btn btn-info" target="_blank"><i class="fa fa-external-link"></i> Zobrazit na webu</a>
+
+            {ifModuleExists photoGallery}
+                {if $articlePage->photogallery_gallery_id}
+                    <a class="btn btn-primary" href="{plink :Admin:PhotoGallery:galleryPhotos, id => $articlePage->photogallery_gallery_id, _noLayout => true}"
+                       onclick="window.open(this.href, 'photogallery', 'width=1024,height=768').focus();return false;"
+                       target="photogallery" title="Otevřit fotogalerii ve vyskakovacím okně">
+                        <i class="fa fa-photo"></i> Spravovat fotogalerii
+                    </a>
+                {else}
+                    <a class="btn btn-primary" href="{plink createPhotogallery!, id => $articlePage->id, _noLayout => true}"
+                       onclick="window.open(this.href, 'photogallery', 'width=1024,height=768').focus();$(this).html('<i class=\'fa fa-photo\'></i> Spravovat fotogalerii');return false;"
+                       target="photogallery" title="Vytvořit a spravovat fotogalerii ve vyskakovacím okně">
+                        <i class="fa fa-photo"></i> Vytvořit fotogalerii
+                    </a>
+                {/if}
+            {/}
+
+            {ifModuleExists video}
+                <a class="btn btn-success" href="{plink :Admin:Video:default, articleId => $articlePage->id, _noLayout => true}"
+                   onclick="window.open(this.href, 'video', 'width=1024,height=768').focus();return false;"
+                   target="video" title="Otevřit správu videí u článku ve vyskakovacím okně">
+                    <i class="fa fa-camera"></i> Spravovat videa
+                </a>
+            {/}
+        </span>
+    </h1>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    {control articlePageForm}
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block scripts}
+    <script type="text/javascript">
+        $('#frm-articlePageForm-fluidForm-topic').tagsinput({
+            typeahead: {
+                source: {json_encode(array_values($topics))|noescape},
+                afterSelect: function() {
+                    this.$element[0].value = '';
+                }
+            }
+        });
+    </script>
+{/block}

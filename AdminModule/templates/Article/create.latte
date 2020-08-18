@@ -1,0 +1,45 @@
+{block content}
+    <h1 class="page-header">
+        {block title}Nový článek{/block}
+        <span class="button-area">
+            {ifModuleExists photoGallery}
+                <a class="btn btn-primary" href="#"
+                   onclick="alert('Nejprve prosím uložte článek');return false;"
+                   title="Vytvořit a spravovat fotogalerii ve vyskakovacím okně">
+                    <i class="fa fa-photo"></i> Vytvořit fotogalerii
+                </a>
+            {/}
+
+            {ifModuleExists video}
+                <a class="btn btn-success" href="#"
+                   onclick="alert('Nejprve prosím uložte článek');return false;"
+                   title="Otevřit správu videí u článku ve vyskakovacím okně">
+                    <i class="fa fa-camera"></i> Spravovat videa
+                </a>
+            {/}
+        </span>
+    </h1>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    {control articlePageForm}
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block scripts}
+    <script type="text/javascript">
+        $('#frm-articlePageForm-fluidForm-topic').tagsinput({
+            typeahead: {
+                source: {json_encode(array_values($topics))|noescape},
+                afterSelect: function() {
+                    this.$element[0].value = '';
+                }
+            }
+        });
+    </script>
+{/block}

@@ -1,0 +1,2 @@
+configuration:
+	article.socials.defaultImage: [description: "URL obrázku, který se bude používat při sdílení na sociálních sítí, pokud nemá článek vlastní (např. logo)", nullable: true, default: "https://place-hold.it/300x300/fff/fff"]

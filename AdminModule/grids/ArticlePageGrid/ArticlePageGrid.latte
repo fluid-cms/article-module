@@ -1,0 +1,131 @@
+{extends $defaultTemplate}
+
+{define body-cell-published_on}
+    <td class="text-left">
+        {if $record->is_publish}
+            <a class="tw-ajax" href="{$grid->link('rowAction!', [action => 'changePublish', primary => ($record |primaryToString)])}">
+
+            {if $record->published_on !== null}
+                {if $record->published_on > (new \DateTime)}
+                    <span data-toggle="tooltip" title="Článek není dosud publikován, kliknutím zrušíte načasovanou publikaci" class="text-danger"><i class="fa fa-remove"></i> {$record->published_on|date:'j.n.Y H:i'}</span>
+                {else}
+                    <span data-toggle="tooltip" title="Článek je publikován, kliknutím zrušíte publikaci" class="text-success"><i class="fa fa-check"></i> {$record->published_on|date:'j.n.Y H:i'}</span>
+                {/if}
+            {/if}
+
+            </a>
+        {else}
+            <a class="tw-ajax" href="{$grid->link('rowAction!', [action => 'changePublish', primary => ($record |primaryToString)])}">
+                <span data-toggle="tooltip" title="Kliknutím článek publikujete" class="text-danger"><i class="fa fa-remove"></i> Nepublikován</span>
+            </a>
+        {/if}
+    </td>
+{/define}
+
+{define body-cell-main_category_id}
+    <td class="text-center">
+        {if $record->main_category_id !== null}
+            {$record->main_category->name}
+        {else}
+            <span class="text-danger" title="Kategorie není zvolena!" data-toggle="tooltip"><i class="fa fa-exclamation"></i> Bez kategorie</span>
+        {/if}
+    </td>
+{/define}
+
+{define body-cell-title}
+    <td>
+        <a title="Zobrazit článek na webu" href="{plink :Article:ArticleDetail: $record->id, _noLayout=>false}" target="_blank">{$record->title} <i class="fa fa-external-link"></i></a>
+    </td>
+{/define}
+
+{define body-cell-topic}
+    <td class="text-left" >
+        {foreach $record->related('article_topic_article', 'article_id') as $topic}
+            {$topic->ref('article_topic', 'article_topic_id')->name}
+        {/foreach}
+    </td>
+{/define}
+
+{define body-cell-categories}
+    <td class="text-left" >
+        {foreach $record->related('article_article_category', 'article_id') as $category}
+            {$category->ref('article_category', 'category_id')->name}
+        {/foreach}
+    </td>
+{/define}
+
+{define body-cell-series_id}
+    <td class="text-left" >
+        {if $record->series_id}
+            {$record->ref('article_series', 'series_id')->name}
+        {/if}
+    </td>
+{/define}
+
+{define body-cell-author_id}
+    <td class="text-center">
+        {if $record->author_name !== null}
+            {$record->author_name}
+        {elseif $record->author_id !== null}
+            {$record->author->name}
+        {else}
+            Bez autora
+        {/if}
+        {if $record->show_author == false}
+            - nezobrazuje se
+        {/if}
+    </td>
+{/define}
+
+{define body-cell-last_edited_by_id}
+    <td class="text-center">
+        {if $record->last_edited_by_id !== null}
+            {$record->last_edited_by->name}, {$record->last_edited_on |date:'j.n.Y H:i'}
+        {elseif $record->created_by !== null}
+            {$record->created_by->name}, {$record->created_on |date:'j.n.Y H:i'}
+        {/if}
+    </td>
+{/define}
+
+{define column-label-show_counter}
+    <span class="glyphicon glyphicon-eye-open"></span>
+{/define}
+
+{define body-cell-show_counter}
+    <td class="text-right">
+        {$record->show_counter}
+    </td>
+{/define}
+
+{define row-action-edit}
+    <a href="{$link}" class="btn btn-primary btn-xs" data-toggle="tooltip" title="Upravit">
+        <i class="fa fa-pencil"></i>
+    </a>
+{/define}
+
+{define row-action-delete}
+    <a href="{$link}" class="btn btn-danger btn-xs tw-ajax" data-ajax="on" data-confirm="Opravdu chcete článek smazat{if $record->photogallery_gallery_id} včetně propojené fotogalerie{/if}?" data-toggle="tooltip" title="Smazat">
+        <i class="fa fa-times"></i>
+    </a>
+{/define}
+
+{define row-action-photoGallery}
+    <a n:if="$record->photogallery_gallery_id" href="{$link}" class="btn btn-success btn-xs tw-ajax" data-toggle="tooltip" title="Spravovat fotografie k článku">
+        <i class="fa fa-photo"></i>
+    </a>
+{/define}
+
+{define row-action-createPhotoGallery}
+    <a n:if="!$record->photogallery_gallery_id" href="{$link}" class="btn btn-warning btn-xs tw-ajax" data-confirm="Opravdu chcete přidat fotogalerii k článku {$record->title}?" data-toggle="tooltip" title="Přidat fotogalerii k článku">
+        <i class="fa fa-photo"></i>
+    </a>
+{/define}
+
+{define row-action-videoGallery}
+    <a href="{$link}" class="btn btn-success btn-xs tw-ajax" data-toggle="tooltip" title="Správa videí">
+        <i class="fa fa-video-camera"></i>
+    </a>
+{/define}
+
+{define row-action-changePublish}
+{/define}

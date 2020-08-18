@@ -1,0 +1,110 @@
+{if isset($articles) || $showAll}
+    {if $showAll && !$seriesId}
+        <form action="{link SubmitArticleFilter!}" method="post">
+            <div class="row">
+                <div class="col-sm-12 p-x-5" n:if="$searchText">
+                    <label>Vyhledávaná fráze</label>
+                    <input type="text" class="form-control" placeholder="Vyhledávat..." id="searchText" name="searchText">
+                </div>
+                <div class="row" n:if="$topic">
+                    <div class="col-sm-12">
+                        <label>Vyhledávané téma:</label><br />
+                        {$topic} <a href="{plink removeTopic!}">Odebrat</a>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-6 p-x-5">
+                    <select class="form-control" name="categorySelect">
+                        <option value="">Vyberte rubriku / kategorii</option>
+                        {foreach $categories as $id => $name}
+                            <option value="{$id}" {if $id == $categoryId} selected {/if}>{$name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="col-sm-4 col-xs-6 p-x-5">
+                    <select class="form-control" name="yearMonthSelect">
+                        <option value="">Vyberte měsíc</option>
+                        {foreach $lastMonths as $year => $months}
+                            <optgroup label="{$year}">
+                            {foreach $months as $id => $name}
+                                <option value="{$id}" {if $yearMonth && $id == $yearMonth} selected {/if}>{$name}</option>
+                            {/foreach}
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="col-sm-4 col-xs-12 p-x-5">
+                    <div class="visible-xs"></div>
+                    <input type="submit" class="btn btn-primary active" value="Filtrovat">
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{if $categoryId}Vyfiltrované zprávy{else}Zprávy{/if}</h1>
+            </div>
+        </div>
+
+        {magicControl articleAuthor, ['articleAuthorHeader', $authorId, $authorName]}
+    {/if}
+
+    {if isset($articles)}
+        {if empty($articles)}
+            <div class="alert alert-danger">
+                Pro zadaná kritéria neexistuje žádný článek
+            </div>
+        {/if}
+        {foreach $articles as $article}
+            <div>
+                <div class="row">
+                    <div n:if="$article->photogallery_gallery_id" class="col-sm-3">
+                        {var $image = $control->getImage($article->photogallery_gallery_id)}
+                        <a href="{plink :Article:ArticleDetail:default, $article->id}" n:if="$image">
+                            <img src="{plink :PhotoGallery:Photo:, $image->photogallery_gallery_id, \Nette\Utils\Strings::webalize($image->photogallery_gallery->name), $image->filename, '232x145'}" class="img-responsive">
+                        </a>
+                    </div>
+                    <div n:class="$article->photogallery_gallery_id ? 'col-sm-9' : 'col-sm-12'">
+                        <a href="{plink :Article:ArticleDetail:default, $article->id}">{$article->title}</a>
+                        <p class="text-justify">
+                            {$article->perex}
+                        </p>
+                        <span class="author" n:if="$article->show_author">
+                            <a href="#">{if $article->author_name}$article->author_name{elseif $article->author_id}{$article->author->name}{else}Redakce{/if}</a>
+                        </span>
+                        <span class="date">
+                            <a href="#" class="time-before">{$article->published_on}</a>
+                        </span>
+                        {*f exist coment module*}
+                        <span n:if="$article->can_add_comment" class="comments hidden-xs">
+                            <a href="#">{$article->number_of_comments} {$article->number_of_comments == 1 ? 'komentář':
+                            (($article->number_of_comments < 5 && $article->number_of_comments > 1) ? 'komentáře' : 'komentářů')}</a>
+                        </span>
+                        {*todo*}
+                        {*<span n:if="$article->galery_id" class="gallery">*}
+                            {*<i class="icon-m icon-m-camera icon-lg icon-fw"></i> <i><a href="#">Fotogalerie</a></i>*}
+                        {*</span>*}
+                    </div>
+                </div>
+            </div>
+
+        {/foreach}
+
+        {if $showAll && !empty($articles)}
+            {include ../paging.latte}
+        {elseif !$smaller}
+            <div class="text-center">
+                <a href="{plink :Article:Article:default, page => 1, search => null, date => null, filter => []}" class="btn btn-primary m-t-15">
+                    Zobrazit archív >
+                </a>
+            </div>
+        {/if}
+    {else}
+        <div class="text-center">
+            Žádné zprávy
+        </div>
+    {/if}
+
+{else}
+    <div class="text-center">
+        Žádné zprávy
+    </div>
+{/if}
