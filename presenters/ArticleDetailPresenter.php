@@ -76,6 +76,7 @@ class ArticleDetailPresenter extends BasePresenter
 			]);
 
 			$metaProperty = [
+				"description"     => $article->perex,
 				"og:url"          => $this->presenter->link('//:Article:ArticleDetail:default', ['id' => $id]),
 				"og:description"  => $article->perex,
 				"og:title"        => $article->title,
