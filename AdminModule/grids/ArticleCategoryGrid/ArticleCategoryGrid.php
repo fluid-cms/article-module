@@ -10,7 +10,7 @@ use TwiGrid\Components\Column;
 class ArticleCategoryGrid extends FluidGrid
 {
 
-	protected function build()
+	protected function build(): void
 	{
 		$this->addColumn('id')->setSortable(true);
 		$this->setDefaultOrderBy("name", Column::ASC);

@@ -38,7 +38,7 @@ class ArticlePageGrid extends FluidGrid
 	public $userModel;
 
 
-	protected function build()
+	protected function build(): void
 	{
 		$this->addColumn('id')->setSortable(true);
 		$this->setDefaultOrderBy("id", Column::DESC);
@@ -69,7 +69,7 @@ class ArticlePageGrid extends FluidGrid
 					'is_publish'    => $record->is_publish,
 					'created_by_id' => $this->user->getId(),
 					'created_on'    => new \DateTime()
-				]);
+				])->id;
 				$record->update(['photogallery_gallery_id' => $itemId]);
 
 				$this->flashMessage("Fotogalerie vytvořena, můžete přidat fotografie", "success");

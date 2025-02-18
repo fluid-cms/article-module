@@ -3,7 +3,7 @@
 {define body-cell-published_on}
     <td class="text-left">
         {if $record->is_publish}
-            <a class="tw-ajax" href="{$grid->link('rowAction!', [action => 'changePublish', primary => ($record |primaryToString)])}">
+            <a class="tw-ajax" href="{$grid->link('rowAction!', [name => 'changePublish', primary => ($record |primaryToString)])}">
 
             {if $record->published_on !== null}
                 {if $record->published_on > (new \DateTime)}
@@ -15,7 +15,7 @@
 
             </a>
         {else}
-            <a class="tw-ajax" href="{$grid->link('rowAction!', [action => 'changePublish', primary => ($record |primaryToString)])}">
+            <a class="tw-ajax" href="{$grid->link('rowAction!', [name => 'changePublish', primary => ($record |primaryToString)])}">
                 <span data-toggle="tooltip" title="Kliknutím článek publikujete" class="text-danger"><i class="fa fa-remove"></i> Nepublikován</span>
             </a>
         {/if}

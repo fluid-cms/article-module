@@ -81,7 +81,7 @@ class ArticlePresenter extends BasePresenter
 					'is_publish'    => $articlePage->is_publish,
 					'created_by_id' => $this->user->getId(),
 					'created_on'    => new \DateTime()
-				]);
+				])->id;
 				$this->articlePageModel->update(['photogallery_gallery_id' => $itemId], $id);
 				$this->redirect(':Admin:PhotoGallery:galleryPhotos', ['id' => $itemId]);
 			} elseif($articlePage AND $articlePage->photogallery_gallery_id) {

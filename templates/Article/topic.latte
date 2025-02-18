@@ -1,5 +1,5 @@
 {block title}{$topic}{/block}
 
 {block content}
-    {magicControl article, ['allArticle', $itemPerPage, (($presenter->page - 1) * $itemPerPage) + 1, true, $filter]}
+    {magicControl article ['allArticle', $itemPerPage, (($presenter->page - 1) * $itemPerPage) + 1, true, $filter]}
 {/block}

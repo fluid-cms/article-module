@@ -34,7 +34,7 @@ class ArticleSeriesForm extends FluidForm
 		parent::onSuccessEvent($control, $form);
 
 		$presenter = $control->getPresenter();
-		$values    = $form->getValues(true);
+		$values    = $form->getValues('array');
 
 		if (isset($values['id']) && (int) $values['id'] > 0) {
 			try {

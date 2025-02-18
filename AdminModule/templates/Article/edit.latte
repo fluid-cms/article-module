@@ -5,7 +5,7 @@
         <span class="button-area">
             <a n:href=":Article:ArticleDetail: $presenter->getParameter('id')" class="btn btn-info" target="_blank"><i class="fa fa-external-link"></i> Zobrazit na webu</a>
 
-            {ifModuleExists photoGallery}
+            {if $presenter->ifModuleExists(photoGallery)}
                 {if $articlePage->photogallery_gallery_id}
                     <a class="btn btn-primary" href="{plink :Admin:PhotoGallery:galleryPhotos, id => $articlePage->photogallery_gallery_id, _noLayout => true}"
                        onclick="window.open(this.href, 'photogallery', 'width=1024,height=768').focus();return false;"
@@ -21,7 +21,7 @@
                 {/if}
             {/}
 
-            {ifModuleExists video}
+            {if $presenter->ifModuleExists(video)}
                 <a class="btn btn-success" href="{plink :Admin:Video:default, articleId => $articlePage->id, _noLayout => true}"
                    onclick="window.open(this.href, 'video', 'width=1024,height=768').focus();return false;"
                    target="video" title="Otevřit správu videí u článku ve vyskakovacím okně">

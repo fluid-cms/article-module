@@ -2,7 +2,7 @@
     <h1 class="page-header">
         {block title}Nový článek{/block}
         <span class="button-area">
-            {ifModuleExists photoGallery}
+            {if $presenter->ifModuleExists(photoGallery)}
                 <a class="btn btn-primary" href="#"
                    onclick="alert('Nejprve prosím uložte článek');return false;"
                    title="Vytvořit a spravovat fotogalerii ve vyskakovacím okně">
@@ -10,7 +10,7 @@
                 </a>
             {/}
 
-            {ifModuleExists video}
+            {if $presenter->ifModuleExists(video)}
                 <a class="btn btn-success" href="#"
                    onclick="alert('Nejprve prosím uložte článek');return false;"
                    title="Otevřit správu videí u článku ve vyskakovacím okně">
